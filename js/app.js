@@ -11,6 +11,8 @@ var Enemy = function() {
     this.genRan = Math.floor(Math.random() * 3);
     this.speed = 10;
     this.gameStart = true;
+    this.walk = true;
+    this.count = 0;
 };
 
 // Update the enemy's position, required method for game
@@ -22,7 +24,7 @@ Enemy.prototype.update = function(dt) {
 
     if(this.gameStart){
 
-        this.speed = Math.ceil(Math.random() * 8);
+        this.speed = Math.ceil(Math.random() * 5);
 
         if(this.genRan == 0){
 
@@ -40,11 +42,17 @@ Enemy.prototype.update = function(dt) {
 
     if(this.x <= 599) {
         this.x += this.speed;
+        if (player.x < this.x + 50 && player.x + 50 > this.x && player.y < this.y + 50 && 50 + player.y > this.y){
+
+            player.x = 202;
+            player.y = 400;
+
+        }
     }else{
 
         this.x = -101;
         this.y = 225;
-        this.speed = Math.ceil(Math.random() * 8);
+        this.speed = Math.ceil(Math.random() * 5);
         if(this.genRan == 0){
 
             this.y = this.y - 83;
@@ -63,6 +71,32 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    if(this.walk) {
+
+        console.log('1');
+
+        this.sprite = 'images/enemy-bug2.png';
+        this.count ++;
+
+        if(this.count == 20){
+        this.walk = false;
+            this.count = 0;
+            }
+
+    }else{
+
+        console.log('2');
+
+        this.sprite = 'images/enemy-bug.png';
+
+        this.count ++;
+
+        if(this.count == 20){
+            this.walk = true;
+            this.count = 0;
+        }
+
+    }
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
